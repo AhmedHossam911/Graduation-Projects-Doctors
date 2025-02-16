@@ -14,75 +14,74 @@
 <body>
 
     <div class="login-container">
-        <form class="login-form" method="POST">
-            <h2>Graduation Projects Doctors Announcement </h2>
-            <div class="img">
-                <img src="img/Logo.png" alt="Logo">
-            </div>
-            <div class="input-group">
-                <input type="text" id="searchId" placeholder="Enter ID">
-            </div>
-            <button onclick="searchSheet()">Search</button>
-            <p class="copyright">&copy; 2025 <span>BIS</span> All Right Reserved</p>
-            <script>
-                let sheetData = [];
-                const sheetUrl = "https://docs.google.com/spreadsheets/d/1hqHXTj3O8Vr9g_sZzW3XTdDFXGts_Gnwvwm2Mi5n-Dw/gviz/tq?tqx=out:json";
+        <h2>Graduation Projects Doctors Announcement </h2>
+        <div class="img">
+            <img src="img/Logo.png" alt="Logo">
+        </div>
+        <div class="input-group">
+            <input type="text" id="searchId" placeholder="Enter ID">
+        </div>
+        <button onclick="searchSheet()">Search</button>
+        <p class="copyright">&copy; 2025 <span>BIS</span> All Right Reserved</p>
+        <script>
+            let sheetData = [];
+            const sheetUrl = "https://docs.google.com/spreadsheets/d/1hqHXTj3O8Vr9g_sZzW3XTdDFXGts_Gnwvwm2Mi5n-Dw/gviz/tq?tqx=out:json";
 
-                async function fetchSheetData() {
-                    try {
-                        const response = await fetch(sheetUrl);
-                        const text = await response.text();
-                        const jsonText = text.substring(47, text.length - 2);
-                        const jsonData = JSON.parse(jsonText);
+            async function fetchSheetData() {
+                try {
+                    const response = await fetch(sheetUrl);
+                    const text = await response.text();
+                    const jsonText = text.substring(47, text.length - 2);
+                    const jsonData = JSON.parse(jsonText);
 
-                        if (!jsonData.table || !jsonData.table.rows) {
-                            Swal.fire("Error", "No valid data found in the sheet.", "error");
-                            return;
-                        }
-
-                        sheetData = jsonData.table.rows.map(row => ({
-                            teamNum: String(row.c[0]?.v || "").trim(),
-                            studentName: String(row.c[1]?.v || "").trim(),
-                            id: String(row.c[2]?.v || "").trim(),
-                            doctor: String(row.c[3]?.v || "").trim(),
-                            doctorPhone: String(row.c[4]?.v || "").trim()
-                        }));
-
-                        Swal.fire("Success", "Google Sheets data loaded successfully!", "success");
-                    } catch (error) {
-                        Swal.fire("Error", "Failed to load Google Sheets data.", "error");
-                    }
-                }
-
-                function searchSheet() {
-                    const searchId = String(document.getElementById('searchId').value.trim());
-
-                    if (!searchId) {
-                        Swal.fire("Warning", "Please enter an ID to search.", "warning");
+                    if (!jsonData.table || !jsonData.table.rows) {
+                        Swal.fire("Error", "No valid data found in the sheet.", "error");
                         return;
                     }
 
-                    const result = sheetData.find(row => String(row.id).trim() === searchId);
+                    sheetData = jsonData.table.rows.map(row => ({
+                        teamNum: String(row.c[0]?.v || "").trim(),
+                        studentName: String(row.c[1]?.v || "").trim(),
+                        id: String(row.c[2]?.v || "").trim(),
+                        doctor: String(row.c[3]?.v || "").trim(),
+                        doctorPhone: String(row.c[4]?.v || "").trim()
+                    }));
 
-                    if (result) {
-                        Swal.fire({
-                            title: "Search Result",
-                            html: `
+                    Swal.fire("Success", "Google Sheets data loaded successfully!", "success");
+                } catch (error) {
+                    Swal.fire("Error", "Failed to load Google Sheets data.", "error");
+                }
+            }
+
+            function searchSheet() {
+                const searchId = String(document.getElementById('searchId').value.trim());
+
+                if (!searchId) {
+                    Swal.fire("Warning", "Please enter an ID to search.", "warning");
+                    return;
+                }
+
+                const result = sheetData.find(row => String(row.id).trim() === searchId);
+
+                if (result) {
+                    Swal.fire({
+                        title: "Search Result",
+                        html: `
                 <strong>Team Num:</strong> ${result.teamNum || "N/A"} <br>
                 <strong>Student Name:</strong> ${result.studentName || "N/A"} <br>
                 <strong>ID:</strong> ${result.id} <br>
                 <strong>Doctor:</strong> ${result.doctor || "N/A"} <br>
                 <strong>Doctor Phone:</strong> ${result.doctorPhone || "N/A"}
             `,
-                            icon: "success"
-                        });
-                    } else {
-                        Swal.fire("Not Found", "No matching ID found.", "error");
-                    }
+                        icon: "success"
+                    });
+                } else {
+                    Swal.fire("Not Found", "No matching ID found.", "error");
                 }
+            }
 
-                fetchSheetData();
-            </script>
+            fetchSheetData();
+        </script>
 </body>
 
 </html>
