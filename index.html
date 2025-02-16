@@ -14,7 +14,7 @@
 <body>
 
     <div class="login-container">
-        <h2>Graduation Projects Doctors Announcement </h2>
+        <h2 style="color: white ; text-align: center;">Graduation Projects Doctors Announcement </h2>
         <div class="img">
             <img src="img/Logo.png" alt="Logo">
         </div>
@@ -51,7 +51,6 @@
                             doctorPhone: String(row.c[4]?.v || "").trim()
                         }));
 
-                    Swal.fire("Success", "Google Sheets data loaded successfully!", "success");
 
                 } catch (error) {
                     Swal.fire("Error", "Failed to load Google Sheets data.", "error");
