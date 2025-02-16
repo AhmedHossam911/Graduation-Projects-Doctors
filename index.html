@@ -23,6 +23,7 @@
         </div>
         <button onclick="searchSheet()">Search</button>
         <p class="copyright">&copy; 2025 <span>BIS</span> All Right Reserved</p>
+
         <script>
             let sheetData = [];
             const sheetUrl = "https://docs.google.com/spreadsheets/d/1hqHXTj3O8Vr9g_sZzW3XTdDFXGts_Gnwvwm2Mi5n-Dw/gviz/tq?tqx=out:json";
@@ -39,15 +40,19 @@
                         return;
                     }
 
-                    sheetData = jsonData.table.rows.map(row => ({
-                        teamNum: String(row.c[0]?.v || "").trim(),
-                        studentName: String(row.c[1]?.v || "").trim(),
-                        id: String(row.c[2]?.v || "").trim(),
-                        doctor: String(row.c[3]?.v || "").trim(),
-                        doctorPhone: String(row.c[4]?.v || "").trim()
-                    }));
+                    // ✅ تصفية الصفوف الفارغة وتحميل البيانات بشكل صحيح
+                    sheetData = jsonData.table.rows
+                        .filter(row => row.c[2]?.v) // ✅ تأكد أن العمود C (ID) غير فارغ
+                        .map(row => ({
+                            teamNum: String(row.c[0]?.v || "").trim(),
+                            studentName: String(row.c[1]?.v || "").trim(),
+                            id: String(row.c[2]?.v || "").trim(),
+                            doctor: String(row.c[3]?.v || "").trim(),
+                            doctorPhone: String(row.c[4]?.v || "").trim()
+                        }));
 
                     Swal.fire("Success", "Google Sheets data loaded successfully!", "success");
+
                 } catch (error) {
                     Swal.fire("Error", "Failed to load Google Sheets data.", "error");
                 }
@@ -67,11 +72,11 @@
                     Swal.fire({
                         title: "Search Result",
                         html: `
-                <strong>Team Num:</strong> ${result.teamNum || "N/A"} <br>
+                
                 <strong>Student Name:</strong> ${result.studentName || "N/A"} <br>
                 <strong>ID:</strong> ${result.id} <br>
                 <strong>Doctor:</strong> ${result.doctor || "N/A"} <br>
-                <strong>Doctor Phone:</strong> ${result.doctorPhone || "N/A"}
+                <strong>Doctor Phone:</strong> 0${result.doctorPhone || "N/A"}
             `,
                         icon: "success"
                     });
