@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graduation Projects Doctors</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="/CSS/Main CSS/Main.css">
-    <link rel="stylesheet" href="/CSS/Screens CSS/Main.css">
-    <link rel="stylesheet" href="/CSS/Normalize.css">
+    <link rel="stylesheet" href="CSS/Main CSS/Main.css">
+    <link rel="stylesheet" href="CSS/Screens CSS/Main.css">
+    <link rel="stylesheet" href="CSS/Normalize.css">
 </head>
 
 <body>
@@ -86,6 +86,27 @@
             }
 
             fetchSheetData();
+
+            document.addEventListener("keydown", function (e) {
+                if (e.ctrlKey && (e.key === "u" || e.key === "U")) { // منع عرض الكود المصدر
+                    e.preventDefault();
+                }
+                if (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i")) { // منع فتح DevTools في Chrome
+                    e.preventDefault();
+                }
+                if (e.ctrlKey && e.shiftKey && (e.key === "J" || e.key === "j")) { // منع Console
+                    e.preventDefault();
+                }
+                if (e.key === "F12") { // منع F12
+                    e.preventDefault();
+                }
+            });
+            
+            document.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+            });
+            
+
         </script>
 </body>
 
